@@ -48,18 +48,12 @@ class Level {
   private func createInitialCookies() -> Set<Cookie> {
     var set: Set<Cookie> = []
 
-    // 1
     for row in 0..<numRows {
       for column in 0..<numColumns {
-
-        // 2
         let cookieType = CookieType.random()
-
-        // 3
         let cookie = Cookie(column: column, row: row, cookieType: cookieType)
         cookies[column, row] = cookie
 
-        // 4
         set.insert(cookie)
       }
     }

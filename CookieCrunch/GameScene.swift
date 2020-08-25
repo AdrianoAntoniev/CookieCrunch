@@ -41,6 +41,15 @@ class GameScene: SKScene {
   let fallingCookieSound = SKAction.playSoundFileNamed("Scrape.wav", waitForCompletion: false)
   let addCookieSound = SKAction.playSoundFileNamed("Drip.wav", waitForCompletion: false)
   
+  var level: Level!
+
+  let tileWidth: CGFloat = 32.0
+  let tileHeight: CGFloat = 36.0
+
+  let gameLayer = SKNode()
+  let cookiesLayer = SKNode()
+
+  
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder) is not used in this app")
   }
@@ -53,8 +62,32 @@ class GameScene: SKScene {
     let background = SKSpriteNode(imageNamed: "Background")
     background.size = size
     addChild(background)
+    addChild(gameLayer)
     
+    let layerPosition = CGPoint(
+        x: -tileWidth * CGFloat(numColumns) / 2,
+        y: -tileHeight * CGFloat(numRows) / 2)
+
+    cookiesLayer.position = layerPosition
+    gameLayer.addChild(cookiesLayer)
   }
+  
+  func addSprites(for cookies: Set<Cookie>) {
+    for cookie in cookies {
+      let sprite = SKSpriteNode(imageNamed: cookie.cookieType.spriteName)
+      sprite.size = CGSize(width: tileWidth, height: tileHeight)
+      sprite.position = pointFor(column: cookie.column, row: cookie.row)
+      cookiesLayer.addChild(sprite)
+      cookie.sprite = sprite
+    }
+  }
+
+  private func pointFor(column: Int, row: Int) -> CGPoint {
+    return CGPoint(
+      x: CGFloat(column) * tileWidth + tileWidth / 2,
+      y: CGFloat(row) * tileHeight + tileHeight / 2)
+  }
+
   
 }
 
