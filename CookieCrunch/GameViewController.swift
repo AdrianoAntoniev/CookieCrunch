@@ -79,6 +79,7 @@ class GameViewController: UIViewController {
     scene.swipeHandler = handleSwipe
     
     gameOverPanel.isHidden = true
+    shuffleButton.isHidden = true
     
     skView.presentScene(scene)
     
@@ -92,7 +93,8 @@ class GameViewController: UIViewController {
   
   // MARK: IBActions
   @IBAction func shuffleButtonPressed(_: AnyObject) {
-    
+    shuffle()
+    decrementMoves()
   }
   
   // MARK: View Controller Functions
@@ -115,7 +117,10 @@ class GameViewController: UIViewController {
     
     level.resetComboMultiplier()
     
-    scene.animateBeginGame { }
+    scene.animateBeginGame {
+      self.shuffleButton.isHidden = false
+
+    }
 
     shuffle()
   }
@@ -197,6 +202,7 @@ class GameViewController: UIViewController {
   func showGameOver() {
     gameOverPanel.isHidden = false
     scene.isUserInteractionEnabled = false
+    shuffleButton.isHidden = true
 
     scene.animateGameOver {
       self.tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.hideGameOver))
