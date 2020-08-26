@@ -53,6 +53,8 @@ class GameScene: SKScene {
   let cropLayer = SKCropNode()
   let maskLayer = SKNode()
 
+  private var swipeFromColumn: Int?
+  private var swipeFromRow: Int?
   
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder) is not used in this app")
@@ -103,6 +105,16 @@ class GameScene: SKScene {
       y: CGFloat(row) * tileHeight + tileHeight / 2)
   }
 
+  private func convertPoint(_ point: CGPoint) -> (success: Bool, column: Int, row: Int) {
+    if point.x >= 0 && point.x < CGFloat(numColumns) * tileWidth &&
+      point.y >= 0 && point.y < CGFloat(numRows) * tileHeight {
+      return (true, Int(point.x / tileWidth), Int(point.y / tileHeight))
+    } else {
+      return (false, 0, 0)  // invalid location
+    }
+  }
+
+  
   func addTiles() {
     // 1
     for row in 0..<numRows {
@@ -151,4 +163,69 @@ class GameScene: SKScene {
   
 }
 
+// MARK: - Extension for touches implementation
+extension GameScene {
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    guard let touch = touches.first else { return }
+    let location = touch.location(in: cookiesLayer)
+    
+    let (success, column, row) = convertPoint(location)
+    if success {
+      if let cookie = level.cookie(atColumn: column, row: row) {
+        swipeFromColumn = column
+        swipeFromRow = row
+      }
+    }
+  }
+  
+  override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    guard swipeFromColumn != nil else { return }
+    guard let touch = touches.first else { return }
+    
+    let location = touch.location(in: cookiesLayer)
 
+    let (success, column, row) = convertPoint(location)
+    if success {
+      var horizontalDelta = 0, verticalDelta = 0
+      if column < swipeFromColumn! {          // swipe left
+        horizontalDelta = -1
+      } else if column > swipeFromColumn! {   // swipe right
+        horizontalDelta = 1
+      } else if row < swipeFromRow! {         // swipe down
+        verticalDelta = -1
+      } else if row > swipeFromRow! {         // swipe up
+        verticalDelta = 1
+      }
+
+      if horizontalDelta != 0 || verticalDelta != 0 {
+        trySwap(horizontalDelta: horizontalDelta, verticalDelta: verticalDelta)
+
+        swipeFromColumn = nil
+      }
+    }
+  }
+  
+  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    swipeFromColumn = nil
+    swipeFromRow = nil
+  }
+
+  override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+    touchesEnded(touches, with: event)
+  }
+
+  private func trySwap(horizontalDelta: Int, verticalDelta: Int) {
+    let toColumn = swipeFromColumn! + horizontalDelta
+    let toRow = swipeFromRow! + verticalDelta
+
+    guard toColumn >= 0 && toColumn < numColumns else { return }
+    guard toRow >= 0 && toRow < numRows else { return }
+    
+    if let toCookie = level.cookie(atColumn: toColumn, row: toRow),
+      let fromCookie = level.cookie(atColumn: swipeFromColumn!, row: swipeFromRow!) {
+      print("*** swapping \(fromCookie) with \(toCookie)")
+    }
+  }
+
+
+}
