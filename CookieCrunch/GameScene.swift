@@ -58,6 +58,8 @@ class GameScene: SKScene {
   private var swipeFromColumn: Int?
   private var swipeFromRow: Int?
   
+  private var selectionSprite = SKSpriteNode()
+  
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder) is not used in this app")
   }
@@ -182,6 +184,26 @@ class GameScene: SKScene {
     run(swapSound)
   }
   
+  func showSelectionIndicator(of cookie: Cookie) {
+    if selectionSprite.parent != nil {
+      selectionSprite.removeFromParent()
+    }
+
+    if let sprite = cookie.sprite {
+      let texture = SKTexture(imageNamed: cookie.cookieType.highlightedSpriteName)
+      selectionSprite.size = CGSize(width: tileWidth, height: tileHeight)
+      selectionSprite.run(SKAction.setTexture(texture))
+
+      sprite.addChild(selectionSprite)
+      selectionSprite.alpha = 1.0
+    }
+  }
+
+  func hideSelectionIndicator() {
+    selectionSprite.run(SKAction.sequence([
+      SKAction.fadeOut(withDuration: 0.3),
+      SKAction.removeFromParent()]))
+  }
 }
 
 // MARK: - Extension for touches implementation
@@ -195,6 +217,8 @@ extension GameScene {
       if let cookie = level.cookie(atColumn: column, row: row) {
         swipeFromColumn = column
         swipeFromRow = row
+        
+        showSelectionIndicator(of: cookie)
       }
     }
   }
@@ -220,13 +244,18 @@ extension GameScene {
 
       if horizontalDelta != 0 || verticalDelta != 0 {
         trySwap(horizontalDelta: horizontalDelta, verticalDelta: verticalDelta)
-
+    
+        hideSelectionIndicator()
         swipeFromColumn = nil
       }
     }
   }
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    if selectionSprite.parent != nil && swipeFromColumn != nil {
+      hideSelectionIndicator()
+    }
+
     swipeFromColumn = nil
     swipeFromRow = nil
   }
