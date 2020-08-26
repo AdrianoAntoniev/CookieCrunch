@@ -161,12 +161,19 @@ class GameViewController: UIViewController {
     
     level.detectPossibleSwaps()
     view.isUserInteractionEnabled = true
+    
+    decrementMoves()
   }
 
   func updateLabels() {
     targetLabel.text = String(format: "%ld", level.targetScore)
     movesLabel.text = String(format: "%ld", movesLeft)
     scoreLabel.text = String(format: "%ld", score)
+  }
+
+  func decrementMoves() {
+    movesLeft -= 1
+    updateLabels()
   }
 
 }
