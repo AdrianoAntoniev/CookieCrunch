@@ -33,6 +33,7 @@
 		D74E598F24F5B5AE007A0287 /* Cookie.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74E598E24F5B5AE007A0287 /* Cookie.swift */; };
 		D74E599124F5B7B5007A0287 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74E599024F5B7B5007A0287 /* Level.swift */; };
 		D74E599324F6F0B3007A0287 /* Swap.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74E599224F6F0B3007A0287 /* Swap.swift */; };
+		D74E599524F6FBD6007A0287 /* Chain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74E599424F6FBD6007A0287 /* Chain.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,7 @@
 		D74E598E24F5B5AE007A0287 /* Cookie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cookie.swift; sourceTree = "<group>"; };
 		D74E599024F5B7B5007A0287 /* Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		D74E599224F6F0B3007A0287 /* Swap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swap.swift; sourceTree = "<group>"; };
+		D74E599424F6FBD6007A0287 /* Chain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chain.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 				D74E598E24F5B5AE007A0287 /* Cookie.swift */,
 				D74E599024F5B7B5007A0287 /* Level.swift */,
 				D74E599224F6F0B3007A0287 /* Swap.swift */,
+				D74E599424F6FBD6007A0287 /* Chain.swift */,
 			);
 			path = CookieCrunch;
 			sourceTree = "<group>";
@@ -236,6 +239,7 @@
 				17A7E59D1FB528160044C48F /* Tile.swift in Sources */,
 				1769DFF91FE3818B00F99A23 /* LevelData.swift in Sources */,
 				17A7E57A1FB513CC0044C48F /* GameViewController.swift in Sources */,
+				D74E599524F6FBD6007A0287 /* Chain.swift in Sources */,
 				D74E598F24F5B5AE007A0287 /* Cookie.swift in Sources */,
 				D74E599124F5B7B5007A0287 /* Level.swift in Sources */,
 				17A7E5721FB513CC0044C48F /* AppDelegate.swift in Sources */,
