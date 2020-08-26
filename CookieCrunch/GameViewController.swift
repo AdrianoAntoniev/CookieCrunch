@@ -68,25 +68,18 @@ class GameViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    // Configure the view
     let skView = view as! SKView
     
     skView.isMultipleTouchEnabled = false
-    
-    // Create and configure the scene.
     scene = GameScene(size: skView.bounds.size)
     scene.scaleMode = .aspectFill
+    scene.swipeHandler = handleSwipe
     
-    // Present the scene.
     skView.presentScene(scene)
-    
-    // Tirei daqui!
-    // scene.addTiles()
     
     level = Level(filename: "Level_1")
     scene.level = level
 
-    // coloquei aqui
     scene.addTiles()
     
     beginGame()
@@ -118,5 +111,13 @@ class GameViewController: UIViewController {
     let newCookies = level.shuffle()
     scene.addSprites(for: newCookies)
   }
+  
+  func handleSwipe(_ swap: Swap) {
+    view.isUserInteractionEnabled = false
 
+    level.performSwap(swap)
+    scene.animate(swap) {
+      self.view.isUserInteractionEnabled = true
+    }
+  }
 }
