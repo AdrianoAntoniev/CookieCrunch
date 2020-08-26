@@ -104,6 +104,10 @@ class GameViewController: UIViewController {
   }
   
   func beginGame() {
+    movesLeft = level.maximumMoves
+    score = 0
+    updateLabels()
+
     shuffle()
   }
 
@@ -128,15 +132,37 @@ class GameViewController: UIViewController {
 
   func handleMatches() {
     let chains = level.removeMatches()
+    
+    if chains.count == 0 {
+      beginNextTurn()
+      return
+    }
     scene.animateMatchedCookies(for: chains) {
+      for chain in chains {
+        self.score += chain.score
+      }
+      self.updateLabels()
+
       let columns = self.level.fillHoles()
       self.scene.animateFallingCookies(in: columns) {
         let columns = self.level.topUpCookies()
         self.scene.animateNewCookies(in: columns) {
-          self.view.isUserInteractionEnabled = true
+          //self.view.isUserInteractionEnabled = true
+          self.handleMatches()
         }
       }
     }
+  }
+
+  func beginNextTurn() {
+    level.detectPossibleSwaps()
+    view.isUserInteractionEnabled = true
+  }
+
+  func updateLabels() {
+    targetLabel.text = String(format: "%ld", level.targetScore)
+    movesLabel.text = String(format: "%ld", movesLeft)
+    scoreLabel.text = String(format: "%ld", score)
   }
 
 }
