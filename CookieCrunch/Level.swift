@@ -30,6 +30,7 @@ import Foundation
 
 let numColumns = 9
 let numRows = 9
+let numLevels = 4 // Excluding level 0
 
 class Level {
   private var cookies = Array2D<Cookie>(columns: numColumns, rows: numRows)
@@ -39,7 +40,6 @@ class Level {
   var targetScore = 0
   var maximumMoves = 0
   private var comboMultiplier = 0
-
   
   init(filename: String) {
     guard let levelData = LevelData.loadFrom(file: filename) else { return }
