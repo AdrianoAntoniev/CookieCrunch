@@ -70,6 +70,7 @@ class GameViewController: UIViewController {
     
     // Configure the view
     let skView = view as! SKView
+    
     skView.isMultipleTouchEnabled = false
     
     // Create and configure the scene.
@@ -79,9 +80,15 @@ class GameViewController: UIViewController {
     // Present the scene.
     skView.presentScene(scene)
     
+    // Tirei daqui!
+    // scene.addTiles()
+    
     level = Level(filename: "Level_1")
     scene.level = level
 
+    // coloquei aqui
+    scene.addTiles()
+    
     beginGame()
   }
   

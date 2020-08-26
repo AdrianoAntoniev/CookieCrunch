@@ -52,6 +52,7 @@ class Level {
   func tileAt(column: Int, row: Int) -> Tile? {
     precondition(column >= 0 && column < numColumns)
     precondition(row >= 0 && row < numRows)
+    
     return tiles[column, row]
   }
   
