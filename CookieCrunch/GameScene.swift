@@ -160,15 +160,17 @@ class GameScene: SKScene {
           && level.tileAt(column: column, row: row) != nil
         let bottomRight = (column < numColumns) && (row > 0)
           && level.tileAt(column: column, row: row - 1) != nil
-
-        var value = topLeft.hashValue
-        value = value | topRight.hashValue << 1
-        value = value | bottomLeft.hashValue << 2
-        value = value | bottomRight.hashValue << 3
+        
+        //TODO: O erro esta aqui! nao sei pq, mas ele ta pegando lixo de memoria ao fazer o shift.
+        var value = topLeft ? 1 : 0
+        value = value | (topRight ? 1 : 0) << 1
+        value = value | (bottomLeft ? 1 : 0) << 2
+        value = value | (bottomRight ? 1 : 0) << 3
 
         // Values 0 (no tiles), 6 and 9 (two opposite tiles) are not drawn.
         if value != 0 && value != 6 && value != 9 {
           let name = String(format: "Tile_%ld", value)
+          
           let tileNode = SKSpriteNode(imageNamed: name)
           tileNode.size = CGSize(width: tileWidth, height: tileHeight)
           var point = pointFor(column: column, row: row)

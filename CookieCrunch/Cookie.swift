@@ -43,6 +43,7 @@ enum CookieType: Int {
     
     return spriteNames[rawValue - 1]
   }
+
   
   var highlightedSpriteName: String {
     return spriteName + "-Highlighted"
